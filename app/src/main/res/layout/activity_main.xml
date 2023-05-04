@@ -20,6 +20,25 @@
             android:textSize="@dimen/_20ssp"
             android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
+
+
+    <ImageView
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:src="@drawable/ic_image"
+        android:layout_gravity="center"
+        android:id="@+id/imgShow"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select image"
+            android:layout_gravity="center"
+            android:id="@+id/btnSelectImage"/>
+
+
+
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
