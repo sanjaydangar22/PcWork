@@ -1,13 +1,21 @@
 package com.example.myfirebase
 
+import android.R.attr
+import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myfirebase.databinding.ActivityMainBinding
+import com.example.myfirebase.databinding.SelecteImageDialogBinding
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -20,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var firebaseDatabase: FirebaseDatabase
 
     var PICK_IMAGE_REQUEST = 100
+    var CAMERA_REQUEST = 200
 
     lateinit var storageReference: StorageReference
 
@@ -92,7 +101,40 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun selectImage() {
-        // Defining Implicit Intent to mobile gallery
+
+
+        var selectDialog = Dialog(this)
+
+        var dialogBinding= SelecteImageDialogBinding.inflate(layoutInflater)
+        selectDialog.setContentView(dialogBinding.root)
+
+        dialogBinding.linCancel.setOnClickListener {
+            selectDialog.dismiss()
+            Toast.makeText(this, "Cansel", Toast.LENGTH_SHORT).show()
+        }
+        dialogBinding.imgGallery.setOnClickListener {
+        galleryView()
+            selectDialog.dismiss()
+        }
+        dialogBinding.imgCamera.setOnClickListener {
+            cameraView()
+            selectDialog.dismiss()
+        }
+
+        selectDialog. window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        selectDialog.window?.setBackgroundDrawable( ColorDrawable(Color.TRANSPARENT))
+        selectDialog.show()
+
+
+    }
+
+    private fun cameraView() {
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(cameraIntent, CAMERA_REQUEST)
+    }
+
+    private fun galleryView() {
+
         // Defining Implicit Intent to mobile gallery
         val intent = Intent()
         intent.type = "image/*"
@@ -108,6 +150,10 @@ class MainActivity : AppCompatActivity() {
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE_REQUEST) {
             filePath = data?.data!!
             mainBinding.imgShow.setImageURI(filePath)
+        }
+        if (requestCode === CAMERA_REQUEST && resultCode === RESULT_OK) {
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            mainBinding.imgShow.setImageBitmap(imageBitmap)
         }
     }
 
