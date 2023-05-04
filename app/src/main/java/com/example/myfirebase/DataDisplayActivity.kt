@@ -1,12 +1,17 @@
 package com.example.myfirebase
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myfirebase.databinding.ActivityDataDisplayBinding
+import com.example.myfirebase.databinding.DeleteDialogBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -74,13 +79,31 @@ class DataDisplayActivity : AppCompatActivity() {
     }
 
     private fun deleteRecordFromDatabase() {
-        firebaseDatabase.reference.child("StudentTb").child(id).removeValue()
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    Toast.makeText(this, "Record Deleted Successfully", Toast.LENGTH_SHORT).show()
+
+        var deleteDialog = Dialog(this)
+
+        var dialogBinding=DeleteDialogBinding.inflate(layoutInflater)
+        deleteDialog.setContentView(dialogBinding.root)
+
+        dialogBinding.btnCanselDelete.setOnClickListener {
+            deleteDialog.dismiss()
+            Toast.makeText(this, "Cansel", Toast.LENGTH_SHORT).show()
+        }
+        dialogBinding.btnDelete.setOnClickListener {
+            firebaseDatabase.reference.child("StudentTb").child(id).removeValue()
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        Toast.makeText(this, "Record Deleted Successfully", Toast.LENGTH_SHORT).show()
+                    }
+                }.addOnFailureListener {
+                    Log.e("TAG", "initView: " + it.message)
                 }
-            }.addOnFailureListener {
-                Log.e("TAG", "initView: " + it.message)
-            }
+            deleteDialog.dismiss()
+        }
+
+        deleteDialog. window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        deleteDialog.window?.setBackgroundDrawable( ColorDrawable(Color.TRANSPARENT))
+        deleteDialog.show()
+
     }
 }

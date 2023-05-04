@@ -44,14 +44,52 @@ class MainActivity : AppCompatActivity() {
 
             selectImage()
         }
+        mainBinding.btnUploadImage.setOnClickListener {
 
+            uploadImage()
+        }
 
         mainBinding.btnInsertRecord.setOnClickListener {
 
-            insertData()
+
+            var name = mainBinding.edtName.text.toString()
+            var email = mainBinding.edtEmail.text.toString()
+            var mobile = mainBinding.edtMobile.text.toString()
+            var address = mainBinding.edtAddress.text.toString()
+            var key = firebaseDatabase.reference.child("StudentTb").push().key ?: ""
+            var data = StudentModelClass(key, name, email, mobile, address)
+
+            if (name.isEmpty()) {
+                Toast.makeText(this, "please Enter Name", Toast.LENGTH_SHORT).show()
+            } else if (email.isEmpty()) {
+                Toast.makeText(this, "please Enter Email", Toast.LENGTH_SHORT).show()
+            } else if (mobile.isEmpty()) {
+                Toast.makeText(this, "please Enter Mobile", Toast.LENGTH_SHORT).show()
+            } else if (address.isEmpty()) {
+                Toast.makeText(this, "please Enter Address", Toast.LENGTH_SHORT).show()
+            } else {
+                firebaseDatabase.reference.child("StudentTb").child(key).setValue(data)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
+                        }
+                    }.addOnFailureListener {
+                        Log.e("TAG", "initView: " + it.message)
+                    }
+                mainBinding.edtName.setText("").toString()
+                mainBinding.edtEmail.setText("").toString()
+                mainBinding.edtMobile.setText("").toString()
+                mainBinding.edtAddress.setText("").toString()
+            }
 
         }
+        mainBinding.btnDisplayRecord.setOnClickListener {
+
+            var i = Intent(this@MainActivity, DataDisplayActivity::class.java)
+            startActivity(i)
+        }
     }
+
 
     private fun selectImage() {
         // Defining Implicit Intent to mobile gallery
@@ -74,11 +112,8 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
-
-    private fun insertData() {
-        // UploadImage method
+    // UploadImage method
+    private fun uploadImage() {
         if (filePath != null) {
 
             // Code for showing progressDialog while uploading
@@ -117,42 +152,5 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
         }
-
-        var name = mainBinding.edtName.text.toString()
-        var email = mainBinding.edtEmail.text.toString()
-        var mobile = mainBinding.edtMobile.text.toString()
-        var address = mainBinding.edtAddress.text.toString()
-        var key = firebaseDatabase.reference.child("StudentTb").push().key ?: ""
-        var data = StudentModelClass(key, name, email, mobile, address)
-
-        if (name.isEmpty()) {
-            Toast.makeText(this, "please Enter Name", Toast.LENGTH_SHORT).show()
-        } else if (email.isEmpty()) {
-            Toast.makeText(this, "please Enter Email", Toast.LENGTH_SHORT).show()
-        } else if (mobile.isEmpty()) {
-            Toast.makeText(this, "please Enter Mobile", Toast.LENGTH_SHORT).show()
-        } else if (address.isEmpty()) {
-            Toast.makeText(this, "please Enter Address", Toast.LENGTH_SHORT).show()
-        } else {
-            firebaseDatabase.reference.child("StudentTb").child(key).setValue(data)
-                .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
-                    }
-                }.addOnFailureListener {
-                    Log.e("TAG", "initView: " + it.message)
-                }
-            mainBinding.edtName.setText("").toString()
-            mainBinding.edtEmail.setText("").toString()
-            mainBinding.edtMobile.setText("").toString()
-            mainBinding.edtAddress.setText("").toString()
-        }
-        mainBinding.btnDisplayRecord.setOnClickListener {
-
-            var i = Intent(this@MainActivity, DataDisplayActivity::class.java)
-            startActivity(i)
-        }
     }
-
-
 }

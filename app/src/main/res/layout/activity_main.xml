@@ -25,20 +25,28 @@
     <ImageView
         android:layout_width="@dimen/_100sdp"
         android:layout_height="@dimen/_100sdp"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_margin="@dimen/_10sdp"
         android:src="@drawable/ic_image"
         android:layout_gravity="center"
         android:id="@+id/imgShow"/>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content">
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Select image"
-            android:layout_gravity="center"
+            android:layout_margin="@dimen/_10sdp"
             android:id="@+id/btnSelectImage"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload image"
+        android:layout_margin="@dimen/_10sdp"
+        android:id="@+id/btnUploadImage"/>
 
-
-
+    </LinearLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
