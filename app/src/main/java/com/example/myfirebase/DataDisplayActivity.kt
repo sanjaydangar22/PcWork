@@ -22,7 +22,6 @@ class DataDisplayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         displayBinding = ActivityDataDisplayBinding.inflate(layoutInflater)
         setContentView(displayBinding.root)
-
         initView()
     }
 
