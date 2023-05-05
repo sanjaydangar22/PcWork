@@ -1,6 +1,5 @@
 package com.example.myfirebase
 
-import android.R.attr
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
@@ -16,6 +15,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myfirebase.databinding.ActivityMainBinding
 import com.example.myfirebase.databinding.SelecteImageDialogBinding
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -33,7 +35,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var storageReference: StorageReference
 
     lateinit var filePath: Uri
-
+    lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var firebaseAuth: FirebaseAuth
     var studentList: ArrayList<StudentModelClass> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +44,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(mainBinding.root)
 
         initView()
+        signOut()
+    }
+
+    private fun signOut() {
+        // Initialize firebase auth
+        firebaseAuth = FirebaseAuth.getInstance()
+        // Firebase sign out
+        firebaseAuth.signOut()
+
+        // Google sign out
+        mainBinding.btnGoogleLogout.setOnClickListener {
+            googleSignInClient.signOut().addOnCompleteListener {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        }
     }
 
     private fun initView() {
