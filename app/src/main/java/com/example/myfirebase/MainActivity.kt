@@ -15,8 +15,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myfirebase.databinding.ActivityMainBinding
 import com.example.myfirebase.databinding.SelecteImageDialogBinding
+import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -49,18 +49,40 @@ class MainActivity : AppCompatActivity() {
 
     private fun signOut() {
         // Initialize firebase auth
-        firebaseAuth = FirebaseAuth.getInstance()
+//        firebaseAuth = FirebaseAuth.getInstance()
         // Firebase sign out
-        firebaseAuth.signOut()
+//        firebaseAuth.signOut()
 
         // Google sign out
         mainBinding.btnGoogleLogout.setOnClickListener {
+            FirebaseAuth.getInstance().signOut();
+            LoginManager.getInstance().logOut();
             googleSignInClient.signOut().addOnCompleteListener {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
             }
+
         }
+//
+//        mainBinding.btnGoogleLogout.setOnClickListener { view ->
+//            // Sign out from google
+//            googleSignInClient.signOut().addOnCompleteListener { task ->
+//                // Check condition
+//                if (task.isSuccessful) {
+//                    // When task is successful sign out from firebase
+//                    firebaseAuth.signOut()
+//                    // Display Toast
+//                    Toast.makeText(
+//                        applicationContext,
+//                        "Logout successful",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    // Finish activity
+//                    finish()
+//                }
+//            }
+//        }
     }
 
     private fun initView() {

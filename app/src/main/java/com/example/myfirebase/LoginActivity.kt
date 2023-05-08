@@ -35,7 +35,6 @@ class LoginActivity : AppCompatActivity() {
 
     lateinit var googleSignInClient: GoogleSignInClient
 
-    lateinit var facebookBinding: ActivityFacebookLoginBinding
     lateinit var callbackManager: CallbackManager
     var Email="email"
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,7 +85,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
-
+//facebook Login
         callbackManager = CallbackManager.Factory.create()
         loginBinding.btnLoginButton.setReadPermissions(Arrays.asList(Email))
 
@@ -123,6 +122,7 @@ class LoginActivity : AppCompatActivity() {
 
 
                     val credential:AuthCredential= FacebookAuthProvider.getCredential(result.accessToken.token)
+                    Log.e("Token", "onSuccess: "+result.accessToken.token)
                     // Check credential
                     firebaseAuth.signInWithCredential(credential)
                         .addOnCompleteListener{
