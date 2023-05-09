@@ -14,11 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyFirebase"
         tools:targetApi="31">
-        <activity
-            android:name=".FacebookLoginActivity"
-            android:exported="true" >
 
-        </activity>
         <activity
             android:name=".LoginActivity"
             android:exported="true">

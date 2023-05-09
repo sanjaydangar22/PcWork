@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myfirebase.databinding.ActivityFacebookLoginBinding
 import com.example.myfirebase.databinding.ActivityLoginBinding
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback

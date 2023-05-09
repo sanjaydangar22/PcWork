@@ -17,6 +17,7 @@ class DetailsUpdateActivity : AppCompatActivity() {
     lateinit var updateBinding: ActivityDetailsUpdateBinding
     lateinit var firebaseDatabase: FirebaseDatabase
     var id=""
+    lateinit var image:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         updateBinding = ActivityDetailsUpdateBinding.inflate(layoutInflater)
@@ -44,7 +45,8 @@ class DetailsUpdateActivity : AppCompatActivity() {
                 updateBinding.edtNameUpdate.text.toString(),
                 updateBinding.edtEmailUpdate.text.toString(),
                 updateBinding.edtMobileUpdate.text.toString(),
-                updateBinding.edtAddressUpdate.text.toString()
+                updateBinding.edtAddressUpdate.text.toString(),
+                image
             )
             firebaseDatabase.reference.child("StudentTb").child(id).setValue(data)
                 .addOnCompleteListener {

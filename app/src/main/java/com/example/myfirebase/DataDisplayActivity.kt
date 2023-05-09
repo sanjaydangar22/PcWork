@@ -58,7 +58,7 @@ class DataDisplayActivity : AppCompatActivity() {
     }
 
     private fun setAdapter() {
-        adapter = AdapterClass({
+        adapter = AdapterClass(this,{
             var editIntent = Intent(this, DetailsUpdateActivity::class.java)
             id = it.id
             editIntent.putExtra("id", id)

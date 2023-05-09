@@ -38,6 +38,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var firebaseAuth: FirebaseAuth
     var studentList: ArrayList<StudentModelClass> = ArrayList()
+
+    lateinit var image:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
@@ -91,10 +93,6 @@ class MainActivity : AppCompatActivity() {
 
         storageReference = FirebaseStorage.getInstance().reference
 
-        mainBinding.btnSelectImage.setOnClickListener {
-
-            selectImage()
-        }
         mainBinding.btnUploadImage.setOnClickListener {
 
             uploadImage()
@@ -103,12 +101,13 @@ class MainActivity : AppCompatActivity() {
         mainBinding.btnInsertRecord.setOnClickListener {
 
 
+
             var name = mainBinding.edtName.text.toString()
             var email = mainBinding.edtEmail.text.toString()
             var mobile = mainBinding.edtMobile.text.toString()
             var address = mainBinding.edtAddress.text.toString()
             var key = firebaseDatabase.reference.child("StudentTb").push().key ?: ""
-            var data = StudentModelClass(key, name, email, mobile, address)
+            var data = StudentModelClass(key, name, email, mobile, address,image)
 
             if (name.isEmpty()) {
                 Toast.makeText(this, "please Enter Name", Toast.LENGTH_SHORT).show()
@@ -131,7 +130,10 @@ class MainActivity : AppCompatActivity() {
                 mainBinding.edtEmail.setText("").toString()
                 mainBinding.edtMobile.setText("").toString()
                 mainBinding.edtAddress.setText("").toString()
+
+
             }
+
 
         }
         mainBinding.btnDisplayRecord.setOnClickListener {
@@ -139,6 +141,11 @@ class MainActivity : AppCompatActivity() {
             var i = Intent(this@MainActivity, DataDisplayActivity::class.java)
             startActivity(i)
         }
+        mainBinding.btnSelectImage.setOnClickListener {
+
+            selectImage()
+        }
+
     }
 
 
@@ -216,9 +223,19 @@ class MainActivity : AppCompatActivity() {
                             + UUID.randomUUID().toString()
                 )
 
+
             // adding listeners on upload
             // or failure of image
-            ref.putFile(filePath)
+            ref.putFile(filePath).addOnCompleteListener{
+
+//                it.result.uploadSessionUri
+
+                ref.downloadUrl.addOnSuccessListener {
+
+                    image=it.toString()
+                    Log.e("TAG", "uploadImage: "+image)
+                }
+            }
                 .addOnSuccessListener { // Image uploaded successfully
                     // Dismiss dialog
                     progressDialog.dismiss()
